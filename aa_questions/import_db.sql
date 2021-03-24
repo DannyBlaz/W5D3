@@ -10,16 +10,26 @@ CREATE TABLE questions(
     id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     body TEXT NOT NULL,
-    FOREIGN KEY(author_key_id) REFERENCES questions_follows(id)
+    users_id INTEGER NOT NULL,
+
+    FOREIGN KEY (users_id) REFERENCES questions_follows(users_id)
 );
 
 -- -- JOINS TABLE 
--- DROP TABLE if exists questions_follows;
--- CREATE TABLE questions_follows(
---     id INTEGER PRIMARY KEY,
---     users INTEGER NOT NULL,
---     questions INTEGER NOT NULL,
--- );
+DROP TABLE if exists questions_follows;
+CREATE TABLE questions_follows(
+    id INTEGER PRIMARY KEY,
+    users_id INTEGER NOT NULL,
+    questions_id INTEGER NOT NULL
+);
 
 INSERT INTO users(fname, lname) VALUES("JESSICA", "UPHOFF");
--- INSERT INTO questions(title, body) VALUES("TITLE", "BODY", (SELECT id FROM questions WHERE fname = "JESSICA" AND lname = "UPHOFF") );
+INSERT INTO questions(title, body, users_id) VALUES("TITLE", "BODY", (
+    SELECT 
+        id
+    FROM 
+        users
+    WHERE 
+        fname = 'JESSICA' AND lname = 'UPHOFF')
+    
+);
